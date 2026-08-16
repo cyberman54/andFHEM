@@ -24,11 +24,10 @@
 
 package li.klass.fhem.log
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -38,7 +37,6 @@ import li.klass.fhem.R
 import li.klass.fhem.activities.drawer.actions.AbstractDrawerAction
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.util.DialogUtil
-import li.klass.fhem.util.PermissionUtil
 import java.io.File
 import javax.inject.Inject
 
@@ -46,10 +44,6 @@ class FhemLogDrawerAction @Inject constructor(
         private val fhemLogService: FhemLogService
 ) : AbstractDrawerAction(R.id.fhem_log) {
     override fun execute(activity: AppCompatActivity) {
-        if (!PermissionUtil.checkPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            DialogUtil.showAlertDialog(activity, R.string.fhem_log, R.string.fhem_log_error_permission_external_storage)
-            return
-        }
         activity.sendBroadcast(Intent(Actions.SHOW_EXECUTING_DIALOG).apply { setPackage(AndFHEMApplication.application?.packageName) })
         GlobalScope.launch(Dispatchers.Main) {
             val temporaryFile = withContext(Dispatchers.IO) {
@@ -63,8 +57,9 @@ class FhemLogDrawerAction @Inject constructor(
     private fun handle(activity: Activity, file: File?) {
         if (file != null) {
             val intent = Intent(Intent.ACTION_VIEW)
-            val uri = Uri.fromFile(file)
+            val uri = FileProvider.getUriForFile(activity, "${activity.packageName}.AndFHEMFileProvider", file)
             intent.setDataAndType(uri, "text/plain")
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             activity.startActivity(intent)
         } else {
             DialogUtil.showAlertDialog(activity, R.string.fhem_log, R.string.fhem_log_error)

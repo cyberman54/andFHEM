@@ -4,9 +4,7 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
       - name: set up JDK
@@ -15,4 +13,30 @@ jobs:
           distribution: 'adopt'
           java-version: 17
       - name: Build with Gradle
-        run: ./gradlew app:clean app:test --no-daemon --scan
+        run: ./gradlew app:clean app:test app:lint app:assembleInappDebug app:assemblePremiumDebug --no-daemon --scan
+
+  instrumentation:
+    strategy:
+      fail-fast: false
+      matrix:
+        api-level: [23, 34, 36]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
+      - name: set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: 17
+      - name: Create emulator
+        run: |
+          yes | sdkmanager "platform-tools" "platforms;android-${{ matrix.api-level }}" "system-images;android-${{ matrix.api-level }};google_apis;x86_64"
+          echo no | avdmanager create avd --force --name test --package "system-images;android-${{ matrix.api-level }};google_apis;x86_64"
+          emulator -avd test -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect &
+          adb wait-for-device
+          while [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" != "1" ]; do sleep 5; done
+          adb shell settings put global window_animation_scale 0
+          adb shell settings put global transition_animation_scale 0
+          adb shell settings put global animator_duration_scale 0
+      - name: Run instrumentation tests
+        run: ./gradlew app:connectedInappDebugAndroidTest app:connectedPremiumDebugAndroidTest --no-daemon

@@ -23,7 +23,6 @@
  */
 package li.klass.fhem.backup.ui
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -38,7 +37,6 @@ import li.klass.fhem.R
 import li.klass.fhem.backup.ImportExportService
 import li.klass.fhem.backup.ImportExportService.ImportStatus
 import li.klass.fhem.util.DialogUtil.DISMISSING_LISTENER
-import li.klass.fhem.util.PermissionUtil
 import net.lingala.zip4j.ZipFile
 import org.apache.commons.lang3.StringUtils
 import java.io.File
@@ -52,22 +50,13 @@ class ImportExportUIService @Inject constructor(private val importExportService:
     }
 
     fun handleImport(fragment: Fragment) {
-        val activity = fragment.activity ?: return
-        if (!PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            return
-        }
-
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "*/."
+            type = "application/octet-stream"
             addCategory(Intent.CATEGORY_OPENABLE)
             putExtra(
                 Intent.EXTRA_MIME_TYPES,
                 arrayOf("application/octet-stream", "application/x-zip")
             )
-            putExtra(
-                "android.provider.extra.INITIAL_URI",
-                Uri.fromFile(importExportService.exportDirectory)
-            );
             putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         }
         fragment.startActivityForResult(intent, importBackupFilePickerRequestCode, null)
@@ -130,15 +119,25 @@ class ImportExportUIService @Inject constructor(private val importExportService:
                 .setPositiveButton(R.string.okButton, DISMISSING_LISTENER).show()
     }
 
-    fun handleExport(activity: Activity) {
-        if (!PermissionUtil.checkPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            return
+    fun handleExport(fragment: Fragment) {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            type = "application/octet-stream"
+            addCategory(Intent.CATEGORY_OPENABLE)
+            putExtra(Intent.EXTRA_TITLE, importExportService.backupFileName)
         }
+        fragment.startActivityForResult(intent, exportBackupFilePickerRequestCode, null)
+    }
+
+    fun onExportFileSelected(destination: Uri, activity: Activity) {
         selectPasswordWith(activity, object : OnBackupPasswordSelected {
             override fun backupPasswordSelected(password: String?) {
                 val file = importExportService.exportSettings(password, activity)
+                activity.contentResolver.openOutputStream(destination)?.use { output ->
+                    file.inputStream().use { input -> input.copyTo(output) }
+                } ?: throw IllegalStateException("Cannot open backup destination")
+                file.delete()
                 @SuppressLint("InflateParams") val layout = activity.layoutInflater.inflate(R.layout.export_success, null)
-                (layout.findViewById<View>(R.id.export_location) as TextView).text = file.absolutePath
+                (layout.findViewById<View>(R.id.export_location) as TextView).text = destination.toString()
                 AlertDialog.Builder(activity)
                         .setView(layout).setCancelable(false)
                         .setPositiveButton(R.string.okButton, DISMISSING_LISTENER).show()
@@ -164,5 +163,6 @@ class ImportExportUIService @Inject constructor(private val importExportService:
                 ImportStatus.INVALID_FILE to R.string.importErrorInvalidFile
         )
         const val importBackupFilePickerRequestCode = 1337
+        const val exportBackupFilePickerRequestCode = 1338
     }
 }

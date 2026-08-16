@@ -26,8 +26,7 @@ android {
     namespace = "li.klass.fhem"
 
     flavorDimensions "default"
-    compileSdkVersion 34
-    buildToolsVersion '34.0.0'
+    compileSdk 36
     testBuildType 'debug'
     compileOptions.incremental = true
 
@@ -44,8 +43,8 @@ android {
     }
 
     defaultConfig {
-        targetSdkVersion 34
-        minSdkVersion 23
+        targetSdk 36
+        minSdk 23
         testApplicationId "li.klass.fhem.test"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
@@ -104,18 +103,12 @@ android {
         }
     }
 
-    packagingOptions {
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'APK LICENSE.txt'
-        exclude 'LICENSE.txt'
-        pickFirst 'application.properties'
-        pickFirst '**/*.json'
-        pickFirst '**/gplot/*.gplot'
-        pickFirst '**/gplot/dummy.txt'
-        pickFirst '**/floorplan-modify.js'
-        pickFirst '**/dummyData.xml'
-        pickFirst '**/test.xml'
+    packaging {
+        resources {
+            excludes += ['META-INF/NOTICE.txt', 'META-INF/LICENSE.txt', 'APK LICENSE.txt', 'LICENSE.txt']
+            pickFirsts += ['application.properties', '**/*.json', '**/gplot/*.gplot', '**/gplot/dummy.txt',
+                           '**/floorplan-modify.js', '**/dummyData.xml', '**/test.xml']
+        }
     }
 
     productFlavors {
@@ -128,7 +121,7 @@ android {
     }
 
     // TODO resolve errors and remove this
-    lintOptions {
+    lint {
         disable 'IconColors'
         disable 'IconDipSize'
         disable 'IconLocation'

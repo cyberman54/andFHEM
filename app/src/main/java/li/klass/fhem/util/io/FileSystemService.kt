@@ -24,28 +24,12 @@
 package li.klass.fhem.util.io
 
 import android.content.Context
-import android.os.Build
-import android.os.Environment
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class FileSystemService @Inject constructor() {
-    val documentsFolder: File
-        get() {
-            val directory: File = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-            } else {
-                val path = Environment.getExternalStorageDirectory().absolutePath + "/Documents"
-                File(path)
-            }
-            if (!directory.exists()) {
-                require(directory.mkdir()) { "cannot create directory" }
-            }
-            return directory
-        }
-
     fun getOrCreateDirectoryIn(file: File, directoryName: String): File {
         val newFile = File(file, directoryName)
         if (!newFile.exists()) {

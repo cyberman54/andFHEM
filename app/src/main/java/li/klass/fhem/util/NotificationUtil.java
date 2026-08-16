@@ -28,12 +28,15 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import li.klass.fhem.R;
 
 public class NotificationUtil {
@@ -43,6 +46,11 @@ public class NotificationUtil {
     public static void notify(Context context, int notifyId, PendingIntent pendingIntent,
                               String contentTitle, String contentText, String tickerText,
                               boolean vibrate) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU
+                && ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
 
         createChannel(context);
         Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

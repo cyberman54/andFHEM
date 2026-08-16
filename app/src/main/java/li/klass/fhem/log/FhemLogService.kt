@@ -24,7 +24,6 @@
 
 package li.klass.fhem.log
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import li.klass.fhem.appwidget.update.AppWidgetInstanceManager
@@ -44,10 +43,8 @@ class FhemLogService @Inject constructor(private val dataConnectionSwitch: DataC
                                          private val fileSystemService: FileSystemService,
                                          private val deviceListService: DeviceListService) {
 
-    @SuppressLint("SetWorldReadable")
     fun getLogAndWriteToTemporaryFile(): File? = getLog()?.let { content: String ->
         File(directory, "fhem.log").apply {
-            setReadable(true, false)
             deleteOnExit()
             writeText(content, Charsets.UTF_8)
         }
@@ -84,7 +81,7 @@ class FhemLogService @Inject constructor(private val dataConnectionSwitch: DataC
     private val applicationContext: Context get() = application.applicationContext
 
     val directory: File
-        get() = fileSystemService.getOrCreateDirectoryIn(fileSystemService.documentsFolder, "andFHEM")
+        get() = fileSystemService.getOrCreateDirectoryIn(application.filesDir, "logs")
 
     companion object {
         private val LOG = LoggerFactory.getLogger(AppWidgetInstanceManager::class.java)!!

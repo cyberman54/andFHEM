@@ -48,6 +48,9 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.setupWithNavController
 import dagger.android.AndroidInjection
@@ -194,7 +197,10 @@ open class AndFHEMMainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
-        PermissionUtil.checkPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+        enableEdgeToEdge()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            PermissionUtil.checkPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+        }
         supportFragmentManager.fragmentFactory = scopedFragmentFactory
 
         themeInitializer.init()
@@ -212,15 +218,23 @@ open class AndFHEMMainActivity : AppCompatActivity() {
             }
 
             broadcastReceiver = Receiver()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                registerReceiver(
-                    broadcastReceiver,
-                    broadcastReceiver!!.intentFilter,
-                    RECEIVER_NOT_EXPORTED
-                )
-            } else {
-                registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
-            }
+            ContextCompat.registerReceiver(
+                this,
+                broadcastReceiver,
+                broadcastReceiver!!.intentFilter,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+            )
+            onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (viewBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                        viewBinding.drawerLayout.closeDrawer(GravityCompat.START)
+                    } else {
+                        isEnabled = false
+                        onBackPressedDispatcher.onBackPressed()
+                        isEnabled = true
+                    }
+                }
+            })
 
             initDrawerLayout()
 
@@ -383,15 +397,12 @@ open class AndFHEMMainActivity : AppCompatActivity() {
                     saveInstanceStateCalled = false
 
                     if (broadcastReceiver != null) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            registerReceiver(
-                                broadcastReceiver,
-                                broadcastReceiver!!.intentFilter,
-                                RECEIVER_NOT_EXPORTED
-                            )
-                        } else {
-                            registerReceiver(broadcastReceiver, broadcastReceiver!!.intentFilter)
-                        }
+                        ContextCompat.registerReceiver(
+                            this,
+                            broadcastReceiver,
+                            broadcastReceiver!!.intentFilter,
+                            ContextCompat.RECEIVER_NOT_EXPORTED
+                        )
                     }
 
                     if (availableConnectionDataAdapter != null) {
@@ -476,14 +487,6 @@ open class AndFHEMMainActivity : AppCompatActivity() {
         this.invalidateOptionsMenu()
     }
 
-    override fun onBackPressed() {
-        if (viewBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            viewBinding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true
@@ -492,7 +495,7 @@ open class AndFHEMMainActivity : AppCompatActivity() {
         if (item.itemId == android.R.id.home) {
             // if the drawer toggle didn't consume the home menu item, this means
             // we disabled it and hence are showing the back button - act accordingly
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
             return true
         } else if (item.itemId == R.id.menu_refresh) {
             sendBroadcast(Intent(Actions.DO_UPDATE).putExtra(BundleExtraKeys.DO_REFRESH, true).apply { setPackage(packageName) })

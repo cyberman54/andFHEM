@@ -24,7 +24,7 @@ class SettingsBackupFragment : PreferenceFragmentCompat() {
         findPreference<Preference>(SettingsKeys.EXPORT_SETTINGS)?.apply {
             onPreferenceClickListener = OnPreferenceClickListener {
                 activity?.let {
-                    importExportUIService.handleExport(it)
+                    importExportUIService.handleExport(this@SettingsBackupFragment)
                 }
                 true
             }
@@ -42,9 +42,17 @@ class SettingsBackupFragment : PreferenceFragmentCompat() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         AndFHEMApplication.application?.daggerComponent?.inject(this)
-        if (requestCode == ImportExportUIService.importBackupFilePickerRequestCode && resultCode == Activity.RESULT_OK) {
-            val filePath = (data?.clipData ?: data?.data) as Uri
-            activity?.let { importExportUIService.onImportFileSelected(filePath, it) }
+        if (resultCode != Activity.RESULT_OK) {
+            return
+        }
+        val file = data?.data ?: data?.clipData?.getItemAt(0)?.uri ?: return
+        activity?.let {
+            when (requestCode) {
+                ImportExportUIService.importBackupFilePickerRequestCode ->
+                    importExportUIService.onImportFileSelected(file, it)
+                ImportExportUIService.exportBackupFilePickerRequestCode ->
+                    importExportUIService.onExportFileSelected(file, it)
+            }
         }
     }
 }

@@ -1,9 +1,7 @@
 package li.klass.fhem.settings.fragments
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.PreferenceFragmentCompat
@@ -17,42 +15,34 @@ class SettingsBackupFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var importExportUIService: ImportExportUIService
 
+    private val importBackup = registerForActivityResult(ActivityResultContracts.OpenDocument()) { file ->
+        val activity = activity ?: return@registerForActivityResult
+        file?.let { importExportUIService.onImportFileSelected(it, activity) }
+    }
+
+    private val exportBackup = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("application/octet-stream")
+    ) { file ->
+        val activity = activity ?: return@registerForActivityResult
+        file?.let { importExportUIService.onExportFileSelected(it, activity) }
+    }
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_backup, rootKey)
         AndFHEMApplication.application?.daggerComponent?.inject(this)
 
         findPreference<Preference>(SettingsKeys.EXPORT_SETTINGS)?.apply {
             onPreferenceClickListener = OnPreferenceClickListener {
-                activity?.let {
-                    importExportUIService.handleExport(this@SettingsBackupFragment)
-                }
+                exportBackup.launch(importExportUIService.backupFileName)
                 true
             }
         }
         findPreference<Preference>(SettingsKeys.IMPORT_SETTINGS)?.apply {
             onPreferenceClickListener = OnPreferenceClickListener {
-                activity?.let {
-                    importExportUIService.handleImport(this@SettingsBackupFragment)
-                }
+                importBackup.launch(arrayOf("application/octet-stream", "application/x-zip"))
                 true
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        AndFHEMApplication.application?.daggerComponent?.inject(this)
-        if (resultCode != Activity.RESULT_OK) {
-            return
-        }
-        val file = data?.data ?: data?.clipData?.getItemAt(0)?.uri ?: return
-        activity?.let {
-            when (requestCode) {
-                ImportExportUIService.importBackupFilePickerRequestCode ->
-                    importExportUIService.onImportFileSelected(file, it)
-                ImportExportUIService.exportBackupFilePickerRequestCode ->
-                    importExportUIService.onExportFileSelected(file, it)
-            }
-        }
-    }
 }

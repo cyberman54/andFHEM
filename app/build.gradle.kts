@@ -55,8 +55,6 @@ buildscript {
 }
 
 val kotlinVersion: String by project
-val kotlinSerializationVersion = "1.0.1"
-val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.16.0"
 val daggerVersion = "2.51.1"
 val coroutinesVersion = "1.10.2"
@@ -114,8 +112,8 @@ dependencies {
     )
     implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "3.0.0")
 
-    implementation(group = "com.android.billingclient", name = "billing", version = "7.1.1")
-    implementation(group = "com.android.billingclient", name = "billing-ktx", version = "7.1.1")
+    implementation(group = "com.android.billingclient", name = "billing", version = "8.0.0")
+    implementation(group = "com.android.billingclient", name = "billing-ktx", version = "8.0.0")
     implementation(group = "androidx.multidex", name = "multidex", version = "2.0.1")
     implementation(group = "androidx.activity", name = "activity-ktx", version = "1.10.1")
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
@@ -162,7 +160,6 @@ dependencies {
         exclude(group = "glide-parent")
     }
 
-    implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version = kotlinVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.8.1")
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = coroutinesVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = coroutinesVersion)

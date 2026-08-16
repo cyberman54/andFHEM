@@ -38,6 +38,7 @@ import li.klass.fhem.util.preferences.SharedPreferencesService
 import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.exception.ZipException
 import net.lingala.zip4j.model.ZipParameters
+import net.lingala.zip4j.model.enums.AesKeyStrength
 import net.lingala.zip4j.model.enums.CompressionMethod
 import net.lingala.zip4j.model.enums.EncryptionMethod
 import org.joda.time.DateTime
@@ -197,7 +198,8 @@ class ImportExportService @Inject constructor(
             parameters.fileNameInZip = SHARED_PREFERENCES_FILE_NAME
             if (password != null) {
                 parameters.isEncryptFiles = true
-                parameters.encryptionMethod = EncryptionMethod.ZIP_STANDARD
+                parameters.encryptionMethod = EncryptionMethod.AES
+                parameters.aesKeyStrength = AesKeyStrength.KEY_STRENGTH_256
             }
 
             stream = ByteArrayInputStream(exportedJson.toByteArray(Charsets.UTF_8))

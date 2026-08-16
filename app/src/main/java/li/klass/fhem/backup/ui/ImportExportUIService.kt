@@ -27,12 +27,10 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import li.klass.fhem.R
 import li.klass.fhem.backup.ImportExportService
 import li.klass.fhem.backup.ImportExportService.ImportStatus
@@ -49,26 +47,17 @@ class ImportExportUIService @Inject constructor(private val importExportService:
         fun backupPasswordSelected(password: String?)
     }
 
-    fun handleImport(fragment: Fragment) {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "application/octet-stream"
-            addCategory(Intent.CATEGORY_OPENABLE)
-            putExtra(
-                Intent.EXTRA_MIME_TYPES,
-                arrayOf("application/octet-stream", "application/x-zip")
-            )
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
-        }
-        fragment.startActivityForResult(intent, importBackupFilePickerRequestCode, null)
-    }
+    val backupFileName: String
+        get() = importExportService.backupFileName
 
     fun onImportFileSelected(file: Uri, activity: Activity) {
         val zipOutputFile = File(activity.cacheDir, "backup.zip").apply {
+            delete()
             deleteOnExit()
         }
 
-        activity.contentResolver.openInputStream(file)?.use {
-            it.copyTo(zipOutputFile.outputStream())
+        activity.contentResolver.openInputStream(file)?.use { input ->
+            zipOutputFile.outputStream().use { output -> input.copyTo(output) }
         }
 
         val zipFile = importExportService.toZipFile(zipOutputFile)
@@ -119,15 +108,6 @@ class ImportExportUIService @Inject constructor(private val importExportService:
                 .setPositiveButton(R.string.okButton, DISMISSING_LISTENER).show()
     }
 
-    fun handleExport(fragment: Fragment) {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            type = "application/octet-stream"
-            addCategory(Intent.CATEGORY_OPENABLE)
-            putExtra(Intent.EXTRA_TITLE, importExportService.backupFileName)
-        }
-        fragment.startActivityForResult(intent, exportBackupFilePickerRequestCode, null)
-    }
-
     fun onExportFileSelected(destination: Uri, activity: Activity) {
         selectPasswordWith(activity, object : OnBackupPasswordSelected {
             override fun backupPasswordSelected(password: String?) {
@@ -162,7 +142,5 @@ class ImportExportUIService @Inject constructor(private val importExportService:
                 ImportStatus.WRONG_PASSWORD to R.string.wrongPassword,
                 ImportStatus.INVALID_FILE to R.string.importErrorInvalidFile
         )
-        const val importBackupFilePickerRequestCode = 1337
-        const val exportBackupFilePickerRequestCode = 1338
     }
 }

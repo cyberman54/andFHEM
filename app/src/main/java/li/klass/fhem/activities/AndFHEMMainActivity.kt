@@ -198,14 +198,14 @@ open class AndFHEMMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         enableEdgeToEdge()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            PermissionUtil.checkPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-        }
         supportFragmentManager.fragmentFactory = scopedFragmentFactory
 
         themeInitializer.init()
 
         super.onCreate(savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            PermissionUtil.checkPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+        }
 
         try {
             saveInstanceStateCalled = false

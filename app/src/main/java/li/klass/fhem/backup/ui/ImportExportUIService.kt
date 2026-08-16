@@ -112,10 +112,24 @@ class ImportExportUIService @Inject constructor(private val importExportService:
         selectPasswordWith(activity, object : OnBackupPasswordSelected {
             override fun backupPasswordSelected(password: String?) {
                 val file = importExportService.exportSettings(password, activity)
-                activity.contentResolver.openOutputStream(destination)?.use { output ->
-                    file.inputStream().use { input -> input.copyTo(output) }
-                } ?: throw IllegalStateException("Cannot open backup destination")
-                file.delete()
+                val exportSucceeded = try {
+                    val output = activity.contentResolver.openOutputStream(destination)
+                        ?: throw IllegalStateException("Cannot open backup destination")
+                    output.use { file.inputStream().use { input -> input.copyTo(it) } }
+                    true
+                } catch (_: Exception) {
+                    false
+                } finally {
+                    file.delete()
+                }
+                if (!exportSucceeded) {
+                    AlertDialog.Builder(activity)
+                        .setTitle(R.string.exportImportError)
+                        .setMessage(R.string.exportError)
+                        .setPositiveButton(R.string.okButton, DISMISSING_LISTENER)
+                        .show()
+                    return
+                }
                 @SuppressLint("InflateParams") val layout = activity.layoutInflater.inflate(R.layout.export_success, null)
                 (layout.findViewById<View>(R.id.export_location) as TextView).text = destination.toString()
                 AlertDialog.Builder(activity)

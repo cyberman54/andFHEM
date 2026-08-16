@@ -611,6 +611,7 @@
     <string name="exportPreferencesSummary">Erstellt ein neues Backup der App-Einstellungen (inklusive Verbindungen zu FHEM, Favoriten usw.)</string>
     <string name="exportImportSuccess">Erfolg</string>
     <string name="exportImportError">Fehler</string>
+    <string name="exportError">Das Backup konnte nicht am ausgewählten Ort gespeichert werden.</string>
     <string name="exportSuccessLocation">Das Backup erfolgte nach</string>
     <string name="importSuccess">Das Backup wurde erfolgreich angewendet.</string>
     <string name="importExportPassword">Backup-Passwort</string>

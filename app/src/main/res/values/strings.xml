@@ -656,6 +656,7 @@
     <string name="exportPreferencesSummary">Creates a new backup of all application preferences (including FHEM connections, favorites and so on)</string>
     <string name="exportImportSuccess">Success</string>
     <string name="exportImportError">Error</string>
+    <string name="exportError">The backup could not be written to the selected location.</string>
     <string name="exportSuccessLocation">Backup was written to</string>
     <string name="importSuccess">The backup was applied successfully.</string>
     <string name="importExportPassword">encryption password</string>

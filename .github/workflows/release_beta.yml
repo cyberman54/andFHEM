@@ -6,6 +6,9 @@ on:
   workflow_dispatch:
     inputs:
 
+permissions:
+  contents: read
+
 jobs:
   build:
 
@@ -14,16 +17,8 @@ jobs:
     if: github.actor == github.event.repository.owner.login
 
     steps:
-      - name: Configure SSH keys
-        env:
-          deployment_private_key: ${{ secrets.deployment_private_key }}
-        run: |
-          mkdir ~/.ssh
-          echo "${{ secrets.deployment_private_key }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
       - name: Checkout
-        run: git clone git@github.com:klassm/andFHEM.git
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4
 
       - name: set up JDK
         uses: actions/setup-java@v4
@@ -45,7 +40,6 @@ jobs:
           echo "andFHEMReleaseAccount=${{ secrets.andFHEMReleaseAccount }}" >> ~/.gradle/gradle.properties
           echo "andFHEMPlayServiceAccountCredentials=${RELEASE_JSON_FILE}" >> ~/.gradle/gradle.properties
 
-          cd andFHEM
           git config user.email "andFHEM@klass.i"
           git config user.name "AndFHEM"
           ./gradlew clean release -Dstage=beta

@@ -24,7 +24,6 @@
 
 package li.klass.fhem.connection.ui
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.content.Context
@@ -45,7 +44,6 @@ import li.klass.fhem.constants.Actions
 import li.klass.fhem.databinding.ConnectionDetailBinding
 import li.klass.fhem.databinding.ConnectionFhemwebBinding
 import li.klass.fhem.fragments.core.BaseFragment
-import li.klass.fhem.util.PermissionUtil
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.*
@@ -210,7 +208,6 @@ class ConnectionDetailFragment @Inject constructor(
         binding.setClientCertificatePath.setOnClickListener(View.OnClickListener { innerView ->
             if (innerView == null) return@OnClickListener
 
-            PermissionUtil.checkPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 type = "*/*"
                 addCategory(Intent.CATEGORY_OPENABLE)

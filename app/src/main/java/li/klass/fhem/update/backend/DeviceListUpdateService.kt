@@ -28,7 +28,6 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import li.klass.fhem.AndFHEMApplication
-import li.klass.fhem.appindex.AppIndexIntentService
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.DataConnectionSwitch
 import li.klass.fhem.connection.backend.DummyServerSpec
@@ -145,7 +144,6 @@ class DeviceListUpdateService @Inject constructor(
 
             return when (roomDeviceList != null && update(connectionId, roomDeviceList)) {
                 true -> {
-                    updateIndex()
                     UpdateResult.Success(roomDeviceList)
                 }
 
@@ -160,17 +158,6 @@ class DeviceListUpdateService @Inject constructor(
                     AndFHEMApplication.application?.packageName
                 )
             })
-        }
-    }
-
-    private fun updateIndex() {
-        try {
-            applicationContext.startService(
-                Intent("com.google.firebase.appindexing.UPDATE_INDEX")
-                    .setClass(applicationContext, AppIndexIntentService::class.java)
-            )
-        } catch (e: Exception) {
-            LOG.debug("cannot update app index, probably because we are in background", e)
         }
     }
 

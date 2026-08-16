@@ -29,10 +29,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <uses-feature android:name="android.hardware.touchscreen" />
 
@@ -45,13 +43,12 @@
 
     <application
         android:name=".AndFHEMApplication"
-        android:allowBackup="true"
-        android:fullBackupContent="true"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:requestLegacyExternalStorage="true"
         android:theme="@style/ApplicationTheme">
         <uses-library
             android:name="com.sec.android.app.multiwindow"
@@ -271,15 +268,6 @@
             <intent-filter>
                 <action android:name="android.service.controls.ControlsProviderService" />
                 <action android:name="li.klass.fhem.constants.Actions.REMOTE_DEVICES_UPDATED" />
-            </intent-filter>
-        </service>
-
-        <service
-            android:name=".appindex.AppIndexIntentService"
-            android:exported="true"
-            android:permission="com.google.android.gms.permission.APPINDEXING">
-            <intent-filter>
-                <action android:name="com.google.firebase.appindexing.UPDATE_INDEX" />
             </intent-filter>
         </service>
 

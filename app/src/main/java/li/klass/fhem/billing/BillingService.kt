@@ -45,7 +45,11 @@ constructor() : PurchasesUpdatedListener {
 
     fun start(context: Context) {
         billingClient = BillingClient.newBuilder(context)
-            .enablePendingPurchases()
+            .enablePendingPurchases(
+                PendingPurchasesParams.newBuilder()
+                    .enableOneTimeProducts()
+                    .build()
+            )
             .setListener(this).build()
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
@@ -64,12 +68,18 @@ constructor() : PurchasesUpdatedListener {
             return
         }
 
-        val skuDetails = SkuDetailsParams.newBuilder()
-            .setSkusList(listOf(itemId))
-            .setType(BillingClient.SkuType.INAPP)
+        val productDetails = QueryProductDetailsParams.newBuilder()
+            .setProductList(
+                listOf(
+                    QueryProductDetailsParams.Product.newBuilder()
+                        .setProductId(itemId)
+                        .setProductType(BillingClient.ProductType.INAPP)
+                        .build()
+                )
+            )
             .build()
-        val details = billingClient.querySkuDetails(skuDetails)
-        val item = details.skuDetailsList?.get(0)
+        val details = billingClient.queryProductDetails(productDetails)
+        val item = details.productDetailsList.firstOrNull()
         if (item == null) {
             LOG.error("requestPurchase() - cannot find item for $itemId");
             return
@@ -77,7 +87,13 @@ constructor() : PurchasesUpdatedListener {
 
         billingClient.launchBillingFlow(
             activity, BillingFlowParams.newBuilder()
-                .setSkuDetails(item)
+                .setProductDetailsParamsList(
+                    listOf(
+                        BillingFlowParams.ProductDetailsParams.newBuilder()
+                            .setProductDetails(item)
+                            .build()
+                    )
+                )
                 .build()
         )
     }
@@ -89,7 +105,7 @@ constructor() : PurchasesUpdatedListener {
         LOG.info("onPurchasesUpdated() - purchases: $purchases")
         if (purchases != null) {
             acknowledgePurchases(purchases)
-            ownedSkus.addAll(purchases.flatMap { it.skus })
+            ownedSkus.addAll(purchases.flatMap { it.products })
             val application = AndFHEMApplication.application
             application?.sendBroadcast(Intent(Actions.DO_UPDATE).apply { setPackage(application.packageName) })
         }
@@ -102,10 +118,12 @@ constructor() : PurchasesUpdatedListener {
 
         return awaitCallback { queryComplete ->
             billingClient.queryPurchasesAsync(
-                BillingClient.SkuType.INAPP
+                QueryPurchasesParams.newBuilder()
+                    .setProductType(BillingClient.ProductType.INAPP)
+                    .build()
             ) { _, purchases ->
                 LOG.info("found purchases - $purchases")
-                val skus = purchases.flatMap { it.skus }
+                val skus = purchases.flatMap { it.products }
                 ownedSkus.addAll(skus)
 
                 acknowledgePurchases(purchases)

@@ -48,27 +48,25 @@ buildscript {
         classpath(
             group = "androidx.navigation",
             name = "navigation-safe-args-gradle-plugin",
-            version = "2.5.3"
+            version = "2.9.2"
         )
         classpath(group = "com.google.firebase", name = "perf-plugin", version = "1.4.2")
     }
 }
 
 val kotlinVersion: String by project
-val kotlinSerializationVersion = "1.0.1"
-val architectureComponentsVersion = "1.1.1"
 val glideVersion = "4.16.0"
 val daggerVersion = "2.51.1"
-val coroutinesVersion = "1.8.1"
-val androidXNavigationVersion = "2.7.7"
-val roomVersion = "2.6.1"
+val coroutinesVersion = "1.10.2"
+val androidXNavigationVersion = "2.9.2"
+val roomVersion = "2.7.2"
 
 plugins {
     id("net.researchgate.release") version "3.0.2"
-    id("com.android.application") version "8.5.1"
-    kotlin("android").version("1.8.20")
-    kotlin("kapt").version("1.8.20")
-    kotlin("plugin.serialization") version "1.8.20"
+    id("com.android.application") version "8.10.0"
+    kotlin("android").version("2.1.21")
+    kotlin("kapt").version("2.1.21")
+    kotlin("plugin.serialization").version("2.1.21")
 }
 
 repositories {
@@ -88,8 +86,7 @@ val unmock = configurations.findByName("unmock")!!
 dependencies {
     implementation(project(":external-dep"))
 
-    implementation("com.google.firebase", name = "firebase-appindexing", version = "19.1.0")
-    implementation(group = "com.google.firebase", name = "firebase-messaging", version = "24.0.0")
+    implementation(group = "com.google.firebase", name = "firebase-messaging", version = "24.1.2")
     implementation(group = "com.google.firebase", name = "firebase-ads", version = "20.6.0")
     implementation(group = "com.google.firebase", name = "firebase-perf", version = "21.0.0")
     implementation(group = "com.google.android.material", name = "material", version = "1.12.0")
@@ -115,13 +112,14 @@ dependencies {
     )
     implementation(group = "com.google.j2objc", name = "j2objc-annotations", version = "3.0.0")
 
-    implementation(group = "com.android.billingclient", name = "billing", version = "7.0.0")
-    implementation(group = "com.android.billingclient", name = "billing-ktx", version = "7.0.0")
+    implementation(group = "com.android.billingclient", name = "billing", version = "8.0.0")
+    implementation(group = "com.android.billingclient", name = "billing-ktx", version = "8.0.0")
     implementation(group = "androidx.multidex", name = "multidex", version = "2.0.1")
+    implementation(group = "androidx.activity", name = "activity-ktx", version = "1.10.1")
     implementation(group = "androidx.cardview", name = "cardview", version = "1.0.0")
-    implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.3.2")
+    implementation(group = "androidx.recyclerview", name = "recyclerview", version = "1.4.0")
     implementation(group = "androidx.percentlayout", name = "percentlayout", version = "1.0.0")
-    implementation(group = "androidx.annotation", name = "annotation", version = "1.8.0")
+    implementation(group = "androidx.annotation", name = "annotation", version = "1.9.1")
     implementation(group = "androidx.preference", name = "preference", version = "1.2.1")
     implementation(group = "androidx.preference", name = "preference-ktx", version = "1.2.1")
     implementation(group = "androidx.room", name = "room-runtime", version = roomVersion)
@@ -141,7 +139,7 @@ dependencies {
         name = "navigation-dynamic-features-fragment",
         version = androidXNavigationVersion
     )
-    implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.7.1")
+    implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.8.8")
 
     implementation(group = "commons-net", name = "commons-net", version = "3.10.0")
     implementation(group = "commons-codec", name = "commons-codec", version = "20041127.091804")
@@ -162,8 +160,7 @@ dependencies {
         exclude(group = "glide-parent")
     }
 
-    implementation(group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk7", version = kotlinVersion)
-    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.6.3")
+    implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version = "1.8.1")
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = coroutinesVersion)
     implementation(group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = coroutinesVersion)
 
@@ -175,17 +172,17 @@ dependencies {
     testImplementation(group = "org.assertj", name = "assertj-core", version = "3.25.3")
     testImplementation(group = "io.mockk", name = "mockk", version = "1.13.11")
 
-    androidTestImplementation(group = "androidx.test", name = "runner", version = "1.5.2")
-    androidTestImplementation(group = "androidx.test", name = "rules", version = "1.5.0")
+    androidTestImplementation(group = "androidx.test", name = "runner", version = "1.6.2")
+    androidTestImplementation(group = "androidx.test", name = "rules", version = "1.6.1")
     androidTestImplementation(
         group = "androidx.test.espresso",
         name = "espresso-core",
-        version = "3.5.1"
+        version = "3.6.1"
     )
     androidTestImplementation(
         group = "androidx.test.espresso",
         name = "espresso-contrib",
-        version = "3.5.1"
+        version = "3.6.1"
     )
 }
 

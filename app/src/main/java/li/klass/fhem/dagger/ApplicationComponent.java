@@ -43,7 +43,6 @@ import li.klass.fhem.activities.locale.SendCommandLocaleSettingActivity;
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter;
 import li.klass.fhem.adapter.devices.strategy.ToggleableStrategy;
 import li.klass.fhem.alarm.clock.update.AlarmClockIntentService;
-import li.klass.fhem.appindex.AppIndexIntentService;
 import li.klass.fhem.appwidget.action.AppWidgetActionBroadcastReceiver;
 import li.klass.fhem.appwidget.provider.BigAppWidgetProvider;
 import li.klass.fhem.appwidget.provider.MediumAppWidgetProvider;
@@ -180,8 +179,6 @@ public interface ApplicationComponent extends AndroidInjector<AndFHEMApplication
 
     void inject(DeviceListUpdateService object);
 
-
-    void inject(AppIndexIntentService object);
 
     void inject(FcmIntentService object);
 

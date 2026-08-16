@@ -38,6 +38,7 @@ import li.klass.fhem.util.preferences.SharedPreferencesService
 import net.lingala.zip4j.ZipFile
 import net.lingala.zip4j.exception.ZipException
 import net.lingala.zip4j.model.ZipParameters
+import net.lingala.zip4j.model.enums.AesKeyStrength
 import net.lingala.zip4j.model.enums.CompressionMethod
 import net.lingala.zip4j.model.enums.EncryptionMethod
 import org.joda.time.DateTime
@@ -54,11 +55,8 @@ class ImportExportService @Inject constructor(
         private val favoritesService: FavoritesService,
         private val applicationProperties: ApplicationProperties
 ) : Logging {
-    private val backupFileName: String
+    val backupFileName: String
         get() = "andFHEM-" + dateTimeFormatter.print(DateTime.now()) + ".backup"
-
-    val exportDirectory: File
-        get() = fileSystemService.getOrCreateDirectoryIn(fileSystemService.documentsFolder, "andFHEM")
 
     enum class ImportStatus {
         SUCCESS, INVALID_FILE, WRONG_PASSWORD
@@ -84,7 +82,7 @@ class ImportExportService @Inject constructor(
             toExport[key] = toExportValues(values)
         }
 
-        return createZipFrom(toExport.toMap(), password)
+        return createZipFrom(toExport.toMap(), password, File(fileSystemService.getCacheDir(context), backupFileName))
     }
 
     fun toExportValues(values: Map<String, *>) = values.entries
@@ -185,13 +183,12 @@ class ImportExportService @Inject constructor(
                 .forEach { sharedPreferencesService.writeAllIn(it.first, it.second) }
     }
 
-    private fun createZipFrom(toExport: Map<String, Map<String, *>>, password: String?): File {
+    private fun createZipFrom(toExport: Map<String, Map<String, *>>, password: String?, exportFile: File): File {
 
         var stream: ByteArrayInputStream? = null
         try {
             val exportedJson = Gson().toJson(toExport)
 
-            val exportFile = File(exportDirectory, backupFileName)
             logger.info("export file location is {}", exportFile.absolutePath)
             val zipFile = ZipFile(exportFile, password?.toCharArray())
 
@@ -201,7 +198,8 @@ class ImportExportService @Inject constructor(
             parameters.fileNameInZip = SHARED_PREFERENCES_FILE_NAME
             if (password != null) {
                 parameters.isEncryptFiles = true
-                parameters.encryptionMethod = EncryptionMethod.ZIP_STANDARD
+                parameters.encryptionMethod = EncryptionMethod.AES
+                parameters.aesKeyStrength = AesKeyStrength.KEY_STRENGTH_256
             }
 
             stream = ByteArrayInputStream(exportedJson.toByteArray(Charsets.UTF_8))

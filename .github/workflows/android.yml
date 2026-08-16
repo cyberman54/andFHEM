@@ -34,7 +34,11 @@ jobs:
           echo no | avdmanager create avd --force --name test --package "system-images;android-${{ matrix.api-level }};google_apis;x86_64"
           emulator -avd test -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect &
           adb wait-for-device
-          while [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" != "1" ]; do sleep 5; done
+          for _ in {1..60}; do
+            [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ] && break
+            sleep 5
+          done
+          [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]
           adb shell settings put global window_animation_scale 0
           adb shell settings put global transition_animation_scale 0
           adb shell settings put global animator_duration_scale 0

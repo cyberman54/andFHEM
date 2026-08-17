@@ -93,6 +93,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/passwordLabel"
+        android:minHeight="@dimen/touch_target_min"
         android:text="@string/connectionShowPassword"
         style="@style/formInput"/>
 </RelativeLayout>

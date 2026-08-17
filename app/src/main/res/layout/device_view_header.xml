@@ -96,6 +96,19 @@
                 />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/updateStatus"
+        style="@style/helperText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:accessibilityLiveRegion="polite"
+        android:gravity="end"
+        android:paddingStart="@dimen/space_m"
+        android:paddingTop="@dimen/space_xs"
+        android:paddingEnd="@dimen/space_m"
+        android:paddingBottom="@dimen/space_xs"
+        android:visibility="gone" />
+
 
     <LinearLayout android:id="@+id/emptyView"
         android:layout_marginTop="20dp"

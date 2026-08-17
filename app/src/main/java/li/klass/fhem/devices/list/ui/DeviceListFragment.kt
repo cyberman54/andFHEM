@@ -64,6 +64,8 @@ import li.klass.fhem.util.ApplicationProperties
 import li.klass.fhem.util.device.DeviceActionUIService
 import org.apache.commons.lang3.time.StopWatch
 import org.slf4j.LoggerFactory
+import java.text.DateFormat
+import java.util.Date
 
 @Suppress("EXPERIMENTAL_FEATURE_WARNING")
 abstract class DeviceListFragment(
@@ -187,6 +189,13 @@ abstract class DeviceListFragment(
             showEmptyView()
         } else {
             hideEmptyView()
+        }
+        view.findViewById<TextView>(R.id.updateStatus)?.apply {
+            text = getString(
+                R.string.lastUpdated,
+                DateFormat.getTimeInstance(DateFormat.SHORT).format(Date())
+            )
+            visibility = View.VISIBLE
         }
         LOGGER.debug("updateWith - adapter is set, time=${stopWatch.time}")
 

@@ -27,6 +27,7 @@ package li.klass.fhem.devices.list.favorites.ui
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import li.klass.fhem.R
 import li.klass.fhem.adapter.devices.core.GenericOverviewDetailDeviceAdapter
@@ -59,7 +60,11 @@ class FavoritesFragment @Inject constructor(
     override fun fillEmptyView(view: LinearLayout, viewGroup: ViewGroup) {
         val inflater = activity?.layoutInflater
         Reject.ifNull(inflater)
-        view.addView(inflater?.inflate(R.layout.favorites_empty_view, viewGroup, false))
+        val emptyView = inflater?.inflate(R.layout.favorites_empty_view, viewGroup, false)
+        emptyView?.findViewById<Button>(R.id.addFavoriteDevices)?.setOnClickListener {
+            findNavController().navigate(R.id.action_to_all_devices)
+        }
+        view.addView(emptyView)
     }
 
     override fun getTitle(context: Context) = context.getString(R.string.favorites)

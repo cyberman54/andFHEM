@@ -707,4 +707,18 @@
 
     <string name="chooseDevice">Choose Device</string>
     <string name="csrfTokenLabel">CSRF Token (optional)</string>
+    <string name="connectionSetupTitle">Set up your FHEM connection</string>
+    <string name="connectionSetupIntro">Follow these steps to connect andFHEM. Your settings stay on this device.</string>
+    <string name="connectionSetupStepServer">1. Server</string>
+    <string name="connectionSetupStepAccess">2. Access and security</string>
+    <string name="connectionSetupHttpsHint">Use an HTTPS URL whenever your FHEM server supports it. Private certificate authorities and client certificates can be configured below.</string>
+    <string name="connectionTest">Test connection</string>
+    <string name="connectionTesting">Testing connection…</string>
+    <string name="connectionTestSuccess">Connection successful. You can save these settings.</string>
+    <string name="connectionTestFailure">Connection failed: %1$s</string>
+    <string name="connectionTestRequired">Test the connection before saving.</string>
+    <string name="addFavoriteDevices">Add devices</string>
+    <string name="more">More</string>
+    <string name="currentConnection">Current connection</string>
+    <string name="lastUpdated">Updated %1$s</string>
 </resources>

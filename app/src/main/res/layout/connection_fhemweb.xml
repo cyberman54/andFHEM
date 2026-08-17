@@ -48,11 +48,19 @@
         android:inputType="textUri" />
 
     <TextView
+        android:id="@+id/httpsHint"
+        style="@style/helperText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/url"
+        android:text="@string/connectionSetupHttpsHint" />
+
+    <TextView
         android:id="@+id/alternateUrlLabel"
         style="@style/formLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/url"
+        android:layout_below="@+id/httpsHint"
         android:text="@string/connectionAlternateUrl" />
 
     <EditText
@@ -130,6 +138,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/passwordLabel"
         android:layout_alignParentEnd="true"
+        android:minHeight="@dimen/touch_target_min"
         android:text="@string/connectionShowPassword" />
 
     <TextView
@@ -188,6 +197,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/clientCertificatePasswordLabel"
         android:layout_alignParentEnd="true"
+        android:minHeight="@dimen/touch_target_min"
         android:text="@string/connectionShowPassword" />
 
 </RelativeLayout>

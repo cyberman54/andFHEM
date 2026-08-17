@@ -4,11 +4,6 @@
         android:id="@+id/main_items"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/allDevicesFragment"
-            android:checked="true"
-            android:icon="@drawable/all_devices"
-            android:title="@string/alldevices" />
-        <item
             android:id="@+id/favoritesFragment"
             android:icon="@drawable/favorites"
             android:title="@string/favorites" />
@@ -16,6 +11,16 @@
             android:id="@+id/roomListFragment"
             android:icon="@drawable/room_list"
             android:title="@string/roomList" />
+        <item
+            android:id="@+id/allDevicesFragment"
+            android:icon="@drawable/all_devices"
+            android:title="@string/alldevices" />
+    </group>
+    <group android:id="@+id/more_items">
+        <item
+            android:id="@+id/menu_more"
+            android:enabled="false"
+            android:title="@string/more" />
         <item
             android:id="@+id/timerListFragment"
             android:icon="@drawable/timer"

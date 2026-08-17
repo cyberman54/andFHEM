@@ -84,13 +84,13 @@
     <style name="Theme.Dialog.Light" parent="@style/Theme.AppCompat.Light.Dialog" />
 
     <style name="toggleButton" parent="button">
-        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_height">@dimen/touch_target_min</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:minWidth">60dp</item>
         <item name="android:focusable">false</item>
         <item name="android:background">@drawable/theme_toggle_button</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/text_label</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>
@@ -121,7 +121,8 @@
         <item name="android:focusable">false</item>
 
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">@dimen/touch_target_min</item>
+        <item name="android:minHeight">@dimen/touch_target_min</item>
         <item name="android:background">@drawable/theme_button</item>
 
         <item name="android:paddingTop">8dp</item>
@@ -131,7 +132,7 @@
 
         <item name="android:layout_margin">4dp</item>
 
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/text_label</item>
     </style>
 
     <style name="button" parent="buttonBase" />
@@ -185,7 +186,7 @@
 
     <style name="deviceOverviewParent" parent="text">
         <item name="android:textColor">@color/accent</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/text_heading</item>
         <item name="android:padding">3dp</item>
         <item name="android:layout_marginBottom">3dp</item>
     </style>
@@ -231,7 +232,7 @@
     <style name="deviceOverviewLayoutDeviceNameBase" parent="textPrimary">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/text_body</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center_vertical</item>
@@ -347,10 +348,26 @@
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/accent</item>
+        <item name="android:textSize">@dimen/text_label</item>
     </style>
 
     <style name="formInput">
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/touch_target_min</item>
+        <item name="android:textSize">@dimen/text_body</item>
+    </style>
+
+    <style name="sectionHeading" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:textSize">@dimen/text_heading</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:accessibilityHeading">true</item>
+    </style>
+
+    <style name="helperText" parent="@style/TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textSize">@dimen/text_label</item>
+        <item name="android:lineSpacingExtra">2dp</item>
     </style>
 
 
@@ -381,9 +398,9 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_marginRight">10dp</item>
-        <item name="android:layout_marginEnd" tools:ignore="NewApi">10dp</item>
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:layout_marginStart" tools:ignore="NewApi">10dp</item>
+        <item name="android:layout_marginRight">@dimen/space_s</item>
+        <item name="android:layout_marginEnd" tools:ignore="NewApi">@dimen/space_s</item>
+        <item name="android:layout_marginLeft">@dimen/space_s</item>
+        <item name="android:layout_marginStart" tools:ignore="NewApi">@dimen/space_s</item>
     </style>
 </resources>

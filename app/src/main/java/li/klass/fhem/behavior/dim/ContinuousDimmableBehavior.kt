@@ -70,7 +70,7 @@ class ContinuousDimmableBehavior internal constructor(val slider: SliderSetListE
     }
 
     override fun getPositionForDimState(dimState: String): Double {
-        val state = dimState.toLowerCase(Locale.getDefault())
+        val state = dimState.lowercase(Locale.getDefault())
                 .replace(DIM_ATTRIBUTES.joinToString(separator = "|").toRegex(), "")
                 .replace("%".toRegex(), "")
                 .trim { it <= ' ' }

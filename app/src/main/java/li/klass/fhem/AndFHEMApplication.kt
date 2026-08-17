@@ -148,7 +148,7 @@ class AndFHEMApplication : DaggerApplication(), Phoenix.Callback {
 
     private fun findOutPackageApplicationVersion(): String = try {
         val pkg = packageName
-        packageManager.getPackageInfo(pkg, 0).versionName
+        packageManager.getPackageInfo(pkg, 0).versionName ?: ""
     } catch (e: PackageManager.NameNotFoundException) {
         Log.d(AndFHEMApplication::class.java.name, "cannot find the application version", e)
         ""

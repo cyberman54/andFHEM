@@ -38,7 +38,7 @@ abstract class DeviceDetailActionProvider : GenericDetailActionProvider {
             xmlListDevice.type.equals(getDeviceType(), ignoreCase = true)
 
     override fun stateAttributeActionFor(item: XmlDeviceViewItem): StateAttributeAction? {
-        val key = item.sortKey.toLowerCase(Locale.getDefault())
+        val key = item.sortKey.lowercase(Locale.getDefault())
         return stateAttributeActionMap[key]
     }
 

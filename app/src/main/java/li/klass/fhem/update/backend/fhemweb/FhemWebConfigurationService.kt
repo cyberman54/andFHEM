@@ -66,7 +66,7 @@ class FhemWebConfigurationService @Inject constructor(
         logger.info("filterHiddenGroupsFrom - fhemwebDevice=${fhemwebDevice.name}, hiddenGroupsAttribute=${hiddenGroups.joinToString(separator = ",")}")
 
         return roomDeviceList.filter {
-            val groups = it.internalDeviceGroupOrGroupAttributes.map { it.toLowerCase(Locale.getDefault()) }
+            val groups = it.internalDeviceGroupOrGroupAttributes.map { it.lowercase(Locale.getDefault()) }
             !hiddenGroups.containsAll(groups)
         }
     }

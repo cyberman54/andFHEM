@@ -84,7 +84,7 @@ class AtDefinitionParser @Inject constructor() {
             val targetStateAddtionalInformation = fhemMatcher.group(3)
 
             val fhemRest =
-                    fhemMatcher.group(4)?.trim { it <= ' ' }?.toLowerCase(Locale.getDefault()) ?: ""
+                    fhemMatcher.group(4)?.trim { it <= ' ' }?.lowercase(Locale.getDefault()) ?: ""
             val ifPattern = Pattern.compile("if[ ]?\\(([^)]+)\\)")
             val ifMatcher = ifPattern.matcher(fhemRest)
 

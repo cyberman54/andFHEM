@@ -179,7 +179,7 @@ class GPlotParser @Inject constructor() {
         val typeMatcher = TYPE_PATTERN.matcher(line)
         if (typeMatcher.find()) {
             try {
-                return LineType.valueOf(typeMatcher.group(1)!!.toUpperCase(Locale.getDefault()))
+                return LineType.valueOf(typeMatcher.group(1)!!.uppercase(Locale.getDefault()))
             } catch (e: IllegalArgumentException) {
                 LOGGER.debug("cannot find type for {}", typeMatcher.group(1))
             }

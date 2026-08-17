@@ -56,7 +56,7 @@ buildscript {
 
 val kotlinVersion: String by project
 val glideVersion = "4.16.0"
-val daggerVersion = "2.51.1"
+val daggerVersion = "2.56.2"
 val coroutinesVersion = "1.10.2"
 val androidXNavigationVersion = "2.9.2"
 val roomVersion = "2.7.2"
@@ -142,7 +142,7 @@ dependencies {
     implementation(group = "androidx.fragment", name = "fragment-ktx", version = "1.8.8")
 
     implementation(group = "commons-net", name = "commons-net", version = "3.10.0")
-    implementation(group = "commons-codec", name = "commons-codec", version = "20041127.091804")
+    implementation(group = "commons-codec", name = "commons-codec", version = "1.3")
     implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.14.0")
 
 

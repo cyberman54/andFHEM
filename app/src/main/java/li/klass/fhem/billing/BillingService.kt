@@ -79,7 +79,7 @@ constructor() : PurchasesUpdatedListener {
             )
             .build()
         val details = billingClient.queryProductDetails(productDetails)
-        val item = details.productDetailsList.firstOrNull()
+        val item = details.productDetailsList.orEmpty().firstOrNull()
         if (item == null) {
             LOG.error("requestPurchase() - cannot find item for $itemId");
             return

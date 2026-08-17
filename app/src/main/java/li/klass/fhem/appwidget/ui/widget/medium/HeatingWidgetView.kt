@@ -57,7 +57,7 @@ class HeatingWidgetView @Inject constructor() : DeviceAppWidgetView() {
         val boost = xmlListDevice.getFirstStateOf(BOOST_STATES)
         val boostText = if (boost != null && boost != "0") context.getString(R.string.boost) else null
 
-        if (warnings != null && warnings.toLowerCase(Locale.getDefault()).contains("open")) {
+        if (warnings != null && warnings.lowercase(Locale.getDefault()).contains("open")) {
             view.setViewVisibility(R.id.windowOpen, View.VISIBLE)
         } else {
             view.setViewVisibility(R.id.windowOpen, View.GONE)

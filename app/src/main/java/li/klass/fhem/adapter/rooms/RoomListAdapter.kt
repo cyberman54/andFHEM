@@ -76,7 +76,7 @@ class RoomListAdapter(
     override fun doSort(): Boolean = true
 
     companion object {
-        val CASE_INSENSITIVE_COMPARATOR: Comparator<String> = Comparator { lhs, rhs -> lhs.toLowerCase().compareTo(rhs.toLowerCase()) }
+        val CASE_INSENSITIVE_COMPARATOR: Comparator<String> = Comparator { lhs, rhs -> lhs.lowercase().compareTo(rhs.lowercase()) }
 
         private val LOG = LoggerFactory.getLogger(RoomListAdapter::class.java)
     }

@@ -72,7 +72,7 @@ class CULHMConfiguration : HeatingConfiguration<FilledTemperatureInterval, CULHM
         val shortName = DayUtil.getShortNameFor(dayProfile.day)
         shortName ?: return emptyList()
 
-        val shortNameToSet = (shortName[0].toUpperCase()) + shortName.substring(1)
+        val shortNameToSet = shortName[0].uppercaseChar() + shortName.substring(1)
 
         return listOf(StateToSet("tempList$shortNameToSet", command))
     }

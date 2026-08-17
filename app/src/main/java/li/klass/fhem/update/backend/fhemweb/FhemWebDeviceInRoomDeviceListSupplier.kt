@@ -87,14 +87,14 @@ class FhemWebDeviceInRoomDeviceListSupplier
         val qualifier = getQualifier()
         logger.debug("findDeviceForQualifier - qualifier is '$qualifier'")
         return devices.firstOrNull {
-            it.name.toUpperCase(Locale.getDefault()).contains(qualifier)
+            it.name.uppercase(Locale.getDefault()).contains(qualifier)
         }
     }
 
     private fun getQualifier(): String =
             (stripToNull(applicationProperties.getStringSharedPreference(FHEMWEB_DEVICE_NAME, null))
                     ?: DEFAULT_FHEMWEB_QUALIFIER)
-                    .toUpperCase(Locale.getDefault())
+                    .uppercase(Locale.getDefault())
 
     companion object {
         private const val DEFAULT_FHEMWEB_QUALIFIER = "andFHEM"

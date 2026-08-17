@@ -28,7 +28,7 @@ import java.util.*
 
 open class SupportsType @JvmOverloads constructor(val type: String, private val expectedLength: Int? = null) {
     open fun supports(parts: List<String>): Boolean = when {
-        parts.isEmpty() || !parts[0].toLowerCase(Locale.getDefault()).matches(type.toLowerCase(Locale.getDefault()).toRegex()) -> false
+        parts.isEmpty() || !parts[0].lowercase(Locale.getDefault()).matches(type.lowercase(Locale.getDefault()).toRegex()) -> false
         else -> expectedLength == null || parts.size >= expectedLength
     }
 }

@@ -31,13 +31,13 @@ object DayUtil {
 
     @JvmStatic
     fun getDayForShortName(shortName: String): Day? =
-            SHORT_NAME_TO_STRING_ID_MAP[shortName.toUpperCase(Locale.getDefault())]
+            SHORT_NAME_TO_STRING_ID_MAP[shortName.uppercase(Locale.getDefault())]
 
     @JvmStatic
     fun getShortNameFor(day: Day): String? {
         for ((key, value) in SHORT_NAME_TO_STRING_ID_MAP) {
             if (value == day) {
-                return key.toLowerCase(Locale.getDefault())
+                return key.lowercase(Locale.getDefault())
             }
         }
         return null

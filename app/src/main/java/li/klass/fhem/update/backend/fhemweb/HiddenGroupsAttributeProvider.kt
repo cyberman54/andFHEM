@@ -34,7 +34,7 @@ class HiddenGroupsAttributeProvider @Inject constructor() {
         return (fhemWebDevice.xmlListDevice.attributeValueFor(XmllistKey.Attribute.FhemWeb.hiddenGroup) ?: "")
                 .split(",")
                 .filter { it.isNotBlank() }
-                .map { it.toLowerCase(Locale.getDefault()) }
+                .map { it.lowercase(Locale.getDefault()) }
                 .toSet()
     }
 }

@@ -103,7 +103,7 @@ object ColorUtil {
     }
 
     fun toHexString(color: Int, digits: Int): String {
-        val asHex = Integer.toHexString(color).toUpperCase(Locale.getDefault())
+        val asHex = Integer.toHexString(color).uppercase(Locale.getDefault())
         return "0x" + StringUtil.prefixPad(asHex, "0", digits)
     }
 

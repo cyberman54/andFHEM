@@ -75,7 +75,7 @@ class LicenseService @Inject constructor(
             val pkgInfo = applicationContext.packageManager
                     .getPackageInfo(applicationContext.packageName, PackageManager.GET_SIGNATURES)
 
-            pkgInfo.signatures
+            pkgInfo.signatures.orEmpty()
                 .map { X509Certificate.getInstance(it.toByteArray()) }
                 .any { it.subjectDN.name.contains("Android Debug") }
         } catch (e: Exception) {

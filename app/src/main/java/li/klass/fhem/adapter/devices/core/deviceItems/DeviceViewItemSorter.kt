@@ -39,21 +39,21 @@ class DeviceViewItemSorter @Inject constructor() {
         for (item in items) {
             val showAfterValue = item.showAfter
             if (!showAfterValue.isNullOrEmpty()) {
-                val lowerCaseName = item.sortKey.toLowerCase(Locale.getDefault())
+                val lowerCaseName = item.sortKey.lowercase(Locale.getDefault())
                 if (XmlDeviceViewItem.FIRST == showAfterValue) {
                     // make sure we are the first one!
                     fieldNameMapping.put(lowerCaseName, "___" + lowerCaseName)
                 } else {
                     fieldNameMapping.put(lowerCaseName,
-                            showAfterValue.toLowerCase(Locale.getDefault()))
+                            showAfterValue.lowercase(Locale.getDefault()))
                 }
             }
         }
 
         val fieldNameMappingRecursive = handleRecursiveMappings(fieldNameMapping)
         result.sortWith(Comparator { lhs, rhs ->
-            val sortKeyLeft = lhs.sortKey.toLowerCase(Locale.getDefault())
-            val sortKeyRight = rhs.sortKey.toLowerCase(Locale.getDefault())
+            val sortKeyLeft = lhs.sortKey.lowercase(Locale.getDefault())
+            val sortKeyRight = rhs.sortKey.lowercase(Locale.getDefault())
 
             val left = fieldNameMappingRecursive[sortKeyLeft] ?: sortKeyLeft
             val right = fieldNameMappingRecursive[sortKeyRight] ?: sortKeyRight

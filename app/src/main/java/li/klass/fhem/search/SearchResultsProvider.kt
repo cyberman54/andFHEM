@@ -23,7 +23,7 @@ class SearchResultsProvider @Inject constructor(
     }
 
     private fun toComparable(input: String): String {
-        return input.toLowerCase(Locale.getDefault())
+        return input.lowercase(Locale.getDefault())
                 .replace(Regex("[^a-z0-9 ]"), "")
     }
 }

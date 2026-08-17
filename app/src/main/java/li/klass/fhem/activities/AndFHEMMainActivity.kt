@@ -398,7 +398,7 @@ open class AndFHEMMainActivity : AppCompatActivity() {
 
                     if (broadcastReceiver != null) {
                         ContextCompat.registerReceiver(
-                            this,
+                            this@AndFHEMMainActivity,
                             broadcastReceiver,
                             broadcastReceiver!!.intentFilter,
                             ContextCompat.RECEIVER_NOT_EXPORTED

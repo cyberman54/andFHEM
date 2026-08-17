@@ -33,7 +33,7 @@ enum class CulHmHeatingMode {
         fun heatingModeFor(value: String?): CulHmHeatingMode? {
             // If the command is not confirmed yet FHEM sets the state to the target state with the "SET_" prefix.
             // We assume that the command goes well and remove the prefix ...
-            var replaced = value?.toUpperCase(Locale.getDefault())?.replace("SET_", "")
+            var replaced = value?.uppercase(Locale.getDefault())?.replace("SET_", "")
                     ?: return null
             if (replaced.equals("MANU", ignoreCase = true)) {
                 replaced = MANUAL.name

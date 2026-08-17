@@ -33,7 +33,7 @@ data class XmlDeviceViewItem(val key: String,
                              val isShowInDetail: Boolean = false,
                              val isShowInOverview: Boolean = false) {
 
-    val sortKey = key.toLowerCase(Locale.getDefault())
+    val sortKey = key.lowercase(Locale.getDefault())
 
     override fun toString(): String {
         return "XmlDeviceViewItem{" +

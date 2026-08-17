@@ -25,58 +25,97 @@
   -->
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         style="@style/fragmentContent">
 
         <TextView
+            style="@style/sectionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_m"
+            android:text="@string/connectionSetupTitle" />
+
+        <TextView
+            style="@style/helperText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:layout_marginBottom="@dimen/space_l"
+            android:text="@string/connectionSetupIntro" />
+
+        <TextView
+            style="@style/sectionHeading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/connectionSetupStepServer" />
+
+        <TextView
             android:id="@+id/nameLabel"
-            android:layout_alignParentTop="true"
+            style="@style/formLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/connectionName"
-            style="@style/formLabel" />
+            android:labelFor="@id/connectionName"
+            android:text="@string/connectionName" />
 
         <EditText
             android:id="@+id/connectionName"
-            android:layout_width="fill_parent"
-            android:layout_toLeftOf="@+id/connectionType"
-            android:layout_toStartOf="@+id/connectionType"
+            style="@style/formInput"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/nameLabel"
             android:inputType="textAutoComplete" />
 
         <TextView
             android:id="@+id/connectionTypeLabel"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/nameLabel"
-            android:layout_toEndOf="@+id/nameLabel"
-            android:layout_alignLeft="@+id/connectionType"
-            android:layout_alignStart="@+id/connectionType"
+            style="@style/formLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/connectionType"
-            style="@style/formLabel" />
+            android:labelFor="@id/connectionType"
+            android:text="@string/connectionType" />
 
         <Spinner
             android:id="@+id/connectionType"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/nameLabel"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/touch_target_min"
+            android:minHeight="@dimen/touch_target_min" />
 
-        <FrameLayout
+        <TextView
+            style="@style/sectionHeading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/connectionPreferences"
-            android:layout_below="@id/connectionType" />
+            android:layout_marginTop="@dimen/space_l"
+            android:text="@string/connectionSetupStepAccess" />
 
-    </RelativeLayout>
+        <FrameLayout
+            android:id="@+id/connectionPreferences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/testConnection"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/touch_target_min"
+            android:layout_marginTop="@dimen/space_l"
+            android:text="@string/connectionTest" />
+
+        <TextView
+            android:id="@+id/connectionTestStatus"
+            style="@style/helperText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:layout_marginBottom="@dimen/space_l"
+            android:accessibilityLiveRegion="polite"
+            tools:text="@string/connectionTestSuccess"
+            android:visibility="gone" />
+
+    </LinearLayout>
 </ScrollView>

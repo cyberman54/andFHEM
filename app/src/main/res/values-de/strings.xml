@@ -662,4 +662,18 @@
 
     <string name="chooseDevice">Gerät auswählen</string>
     <string name="csrfTokenLabel">CSRF Token (optional)</string>
+    <string name="connectionSetupTitle">FHEM-Verbindung einrichten</string>
+    <string name="connectionSetupIntro">Folge diesen Schritten, um andFHEM zu verbinden. Die Einstellungen bleiben auf diesem Gerät.</string>
+    <string name="connectionSetupStepServer">1. Server</string>
+    <string name="connectionSetupStepAccess">2. Zugang und Sicherheit</string>
+    <string name="connectionSetupHttpsHint">Verwende nach Möglichkeit eine HTTPS-URL. Private Zertifizierungsstellen und Client-Zertifikate können unten eingerichtet werden.</string>
+    <string name="connectionTest">Verbindung testen</string>
+    <string name="connectionTesting">Verbindung wird getestet…</string>
+    <string name="connectionTestSuccess">Verbindung erfolgreich. Du kannst die Einstellungen speichern.</string>
+    <string name="connectionTestFailure">Verbindung fehlgeschlagen: %1$s</string>
+    <string name="connectionTestRequired">Teste die Verbindung vor dem Speichern.</string>
+    <string name="addFavoriteDevices">Geräte hinzufügen</string>
+    <string name="more">Mehr</string>
+    <string name="currentConnection">Aktuelle Verbindung</string>
+    <string name="lastUpdated">Aktualisiert %1$s</string>
 </resources>

@@ -28,20 +28,23 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:maxWidth="500dp"
-    android:padding="10dp"
+    android:padding="@dimen/space_l"
     android:gravity="center">
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="@string/noFavoritesCaption"
-        android:textSize="30sp"
-        android:layout_marginBottom="10dp"/>
+        style="@style/sectionHeading"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/space_s"/>
 
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="@string/noFavoritesMessage"
-        android:layout_marginBottom="10dp"/>
+        style="@style/helperText"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/space_m"/>
 
     <ImageView
         android:layout_height="wrap_content"
@@ -52,4 +55,12 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/context_addtofavorites"
         android:layout_gravity="center_horizontal" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addFavoriteDevices"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/touch_target_min"
+        android:layout_marginTop="@dimen/space_m"
+        android:text="@string/addFavoriteDevices" />
 </LinearLayout>

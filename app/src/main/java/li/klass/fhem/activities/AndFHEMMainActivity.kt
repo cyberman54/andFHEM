@@ -44,7 +44,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -54,6 +53,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.setupWithNavController
 import dagger.android.AndroidInjection
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -119,10 +119,10 @@ open class AndFHEMMainActivity : AppCompatActivity() {
                                     content =
                                         getString(intent.getIntExtra(BundleExtraKeys.STRING_ID, 0))
                                 }
-                                Toast.makeText(
-                                    this@AndFHEMMainActivity,
-                                    content,
-                                    Toast.LENGTH_SHORT
+                                Snackbar.make(
+                                    viewBinding.root,
+                                    content ?: "",
+                                    Snackbar.LENGTH_LONG
                                 ).show()
                             }
                             Actions.SHOW_ALERT -> {

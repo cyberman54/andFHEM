@@ -35,15 +35,18 @@ import android.view.*
 import android.widget.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.ConnectionService
 import li.klass.fhem.connection.backend.FHEMServerSpec
+import li.klass.fhem.connection.backend.RequestResult
 import li.klass.fhem.connection.backend.ServerType
 import li.klass.fhem.constants.Actions
 import li.klass.fhem.databinding.ConnectionDetailBinding
 import li.klass.fhem.databinding.ConnectionFhemwebBinding
 import li.klass.fhem.fragments.core.BaseFragment
+import li.klass.fhem.util.ApplicationProperties
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.*
@@ -51,7 +54,8 @@ import javax.inject.Inject
 
 
 class ConnectionDetailFragment @Inject constructor(
-        private val connectionService: ConnectionService
+        private val connectionService: ConnectionService,
+        private val applicationProperties: ApplicationProperties
 ) : BaseFragment() {
     private var connectionType: ServerType? = null
     private var detailChangedListener: ConnectionTypeDetailChangedListener? = null
@@ -90,6 +94,12 @@ class ConnectionDetailFragment @Inject constructor(
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>) {}
+        }
+
+        view.findViewById<Button>(R.id.testConnection).setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                handleConnectionTest()
+            }
         }
 
         return view
@@ -192,6 +202,35 @@ class ConnectionDetailFragment @Inject constructor(
 
             findNavController().popBackStack()
         }
+    }
+
+    private suspend fun handleConnectionTest() {
+        val root = view ?: return
+        val context = context ?: return
+        val testButton = root.findViewById<Button>(R.id.testConnection)
+        val status = root.findViewById<TextView>(R.id.connectionTestStatus)
+        val type = connectionType ?: ServerType.FHEMWEB
+        val saveData = strategyFor(type, context).saveDataFor(root) ?: return
+
+        testButton.isEnabled = false
+        status.visibility = View.VISIBLE
+        status.setText(R.string.connectionTesting)
+
+        val result = withContext(Dispatchers.IO) {
+            val server = FHEMServerSpec(UUID.randomUUID().toString(), type, saveData.name)
+            saveData.fillServer(server)
+            type.getConnectionFor(server, applicationProperties)
+                .executeCommand("version", context)
+        }
+
+        when (result) {
+            is RequestResult.Success -> status.setText(R.string.connectionTestSuccess)
+            is RequestResult.Error -> status.text = getString(
+                R.string.connectionTestFailure,
+                getString(result.error.errorStringId)
+            )
+        }
+        testButton.isEnabled = true
     }
 
     private fun strategyFor(connectionType: ServerType?, context: Context): ConnectionStrategy {

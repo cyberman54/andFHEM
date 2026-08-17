@@ -25,6 +25,16 @@
 <resources>
     <dimen name="button_horizontal_separator">2dp</dimen>
 
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_s">8dp</dimen>
+    <dimen name="space_m">16dp</dimen>
+    <dimen name="space_l">24dp</dimen>
+    <dimen name="touch_target_min">48dp</dimen>
+    <dimen name="card_corner_radius">12dp</dimen>
+    <dimen name="text_body">16sp</dimen>
+    <dimen name="text_label">14sp</dimen>
+    <dimen name="text_heading">20sp</dimen>
+
     <dimen name="app_defaultsize_w">632.0dip</dimen>
     <dimen name="app_defaultsize_h">598.0dip</dimen>
     <dimen name="app_minimumsize_w">632.0dip</dimen>

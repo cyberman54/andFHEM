@@ -35,6 +35,7 @@ import android.view.*
 import android.widget.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 import li.klass.fhem.R
 import li.klass.fhem.connection.backend.ConnectionService
@@ -96,7 +97,7 @@ class ConnectionDetailFragment @Inject constructor(
         }
 
         view.findViewById<Button>(R.id.testConnection).setOnClickListener {
-            GlobalScope.launch(Dispatchers.Main) {
+            viewLifecycleOwner.lifecycleScope.launch {
                 handleConnectionTest()
             }
         }
